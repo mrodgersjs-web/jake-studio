@@ -1,22 +1,32 @@
 [build-system]
 requires = ["setuptools>=68.0", "wheel"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "rig-l10"
-version = "0.1.0"
-description = "RIG L10 Self-Evolving Harness Stack — Certainty Engine, Cognition Stack, Nocturne, Agent Factory"
+version = "0.1.1"
+description = "RIG L10 harness — certainty, cognition, nocturne, agent factory (public core)"
 readme = "README.md"
 requires-python = ">=3.9"
-license = {text = "Proprietary"}
-authors = [{name = "Mike Rodgers"}]
-dependencies = [
-    "sympy>=1.14",
-]
+license = { text = "MIT" }
+authors = [{ name = "Mike Rodgers" }]
+dependencies = ["sympy>=1.12"]
+
+[project.optional-dependencies]
+test = ["pytest>=7.4"]
 
 [project.scripts]
-rig-l10 = "src.cli:main"
+rig-l10 = "cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["cli", "common"]
 
 [tool.setuptools.packages.find]
-where = ["."]
-include = ["src*"]
+where = ["src"]
+include = ["certainty_engine*", "cognition_stack*", "nocturne*", "agent_factory*", "chassis*", "agentic_doctrines*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
