@@ -130,3 +130,90 @@ See [`docs/public-boundary.md`](docs/public-boundary.md).
 ## License
 
 MIT for public studio docs/scripts unless a nested package states otherwise.
+
+
+---
+
+## FDE bar (this studio)
+
+| Practice | Here |
+| --- | --- |
+| Employer summary | top of README |
+| 60s / smoke proof | 
+╭───────────────────────────────────────────╮
+│  RIGForge  ·  Live Tamper-Detection Demo  │
+╰───────────────────────────────────────────╯
+
+╭─────────────────────────────── 1 · the claim ────────────────────────────────╮
+│  An AI agent reports:  BUILD COMPLETE ✅                                     │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭────────────────── 2 · RIGForge seals a signed ProofPacket ───────────────────╮
+│                                                                              │
+│  packet sha256   fcedab8e9001c35d5354dd131a6aa4e955ed155f0c7212af7f3d108f0…  │
+│  hmac signature  ed749d1a844d5788d875dfa47800b6a8db69a3965de41c42…           │
+│  integrity       ✔ valid                                                     │
+│  signature       ✔ valid                                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────── 3 · the tamper ───────────────────────────────╮
+│                                                                              │
+│  But did the agent tell the truth?                                           │
+│                                                                              │
+│  The artifact is TAMPERED and the packet hash is re-forged to hide it.       │
+│  Naive integrity now PASSES — the lie looks clean.                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────── 4 · RIGForge verify ─────────────────────────────╮
+│                                                                              │
+│  naive integrity check  PASS  — fooled by the re-forged hash                 │
+│  hmac signature check   FAIL  — signature does not verify                    │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────╮
+│   🚨 FORGED. Signature invalid. The agent lied.   │
+╰───────────────────────────────────────────────────╯
+
+                Don't trust your agents. Prove them.  — RIGForge                
+
+proof-studio smoke PASS |
+| Public boundary |  |
+| Claim under test | '"L10 core tests + doctor pass"' |
+| Related fleet | [profile](https://github.com/mrodgersjs-web) · [resume](https://github.com/mrodgersjs-web/resume) · [patents teaser](https://github.com/mrodgersjs-web/patents) |
+
+If 
+╭───────────────────────────────────────────╮
+│  RIGForge  ·  Live Tamper-Detection Demo  │
+╰───────────────────────────────────────────╯
+
+╭─────────────────────────────── 1 · the claim ────────────────────────────────╮
+│  An AI agent reports:  BUILD COMPLETE ✅                                     │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭────────────────── 2 · RIGForge seals a signed ProofPacket ───────────────────╮
+│                                                                              │
+│  packet sha256   4d8e70f127f61b74b9ab9862ab44e878bea04cf78d84cc13379f57879…  │
+│  hmac signature  8320f24e5620dd252d6ef60c158d183f312a44170819f9ee…           │
+│  integrity       ✔ valid                                                     │
+│  signature       ✔ valid                                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────── 3 · the tamper ───────────────────────────────╮
+│                                                                              │
+│  But did the agent tell the truth?                                           │
+│                                                                              │
+│  The artifact is TAMPERED and the packet hash is re-forged to hide it.       │
+│  Naive integrity now PASSES — the lie looks clean.                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────── 4 · RIGForge verify ─────────────────────────────╮
+│                                                                              │
+│  naive integrity check  PASS  — fooled by the re-forged hash                 │
+│  hmac signature check   FAIL  — signature does not verify                    │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────╮
+│   🚨 FORGED. Signature invalid. The agent lied.   │
+╰───────────────────────────────────────────────────╯
+
+                Don't trust your agents. Prove them.  — RIGForge                
+
+proof-studio smoke PASS fails, the README claim is considered false until fixed.
