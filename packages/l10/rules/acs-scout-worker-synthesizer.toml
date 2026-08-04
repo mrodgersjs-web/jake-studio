@@ -1,0 +1,66 @@
+# L10 rule distilled from Agentic Coding School
+# name: Scout-Worker-Synthesizer Pattern
+# chapter: Loop Engineering
+# class: loopy-ai
+# source: https://www.agenticcoding.school/member/class/loopy-ai
+# run_id: acs-20260729T183655Z
+# status: distilled-v3
+
+[rule]
+id = "acs.scout-worker-synthesizer"
+title = "Scout-Worker-Synthesizer Pattern for Multi-Agent Tasks"
+domain = "agentic-coding-school"
+chapter = "Loop Engineering"
+class = "loopy-ai"
+
+trigger = "a multi-agent task is being decomposed for parallel execution."
+
+applies_when = """
+the task requires more than one agent to operate on the same goal, OR
+multiple files need concurrent investigation, OR a complex codebase change
+needs recon before edit.
+"""
+
+rule_body = """
+Per the Agentic Coding School (Master Claude Code / Scout, Worker,
+Synthesizer), the canonical multi-agent decomposition is:
+
+  1. Scout: read-only agents explore the target — codebase, API surface,
+     docs, examples. Produce a structured recon report.
+  2. Worker: write-capable agents act on the scout's findings in
+     parallel. Each worker owns a non-overlapping slice.
+  3. Synthesizer: a single agent (or the operator) integrates the
+     workers' outputs, resolves conflicts, and produces the final
+     artifact.
+
+This is the same pattern as `tac-scout-worker-synthesizer` in RIG. The
+school's version is the canonical source citation for the existing skill.
+
+Apply by:
+  1. Decompose the task into scout / worker / synthesizer roles.
+  2. Scouts run first; workers don't start until scout reports land.
+  3. Synthesizer reviews every worker output for overlap / conflict.
+  4. Record the recon report + worker slices + final artifact in the
+     ProofPacket.
+"""
+
+evidence = """
+source: https://www.agenticcoding.school/member/class/loopy-ai
+references:
+  - Master Claude Code class: /member/class/claude-code
+  - Scout, Worker, Synthesizer lesson page
+related_lessons:
+  - Multi-agent tasks in Master Claude Code
+"""
+
+[verification]
+gates = [
+  "recon report produced before any worker starts",
+  "worker slices are non-overlapping",
+  "synthesizer output is the single artifact in the ProofPacket",
+]
+
+[provenance]
+run_id = "acs-20260729T183655Z"
+distilled_at = "2026-07-29T19:55:45+00:00"
+distilled_by = "distill_v3.py"

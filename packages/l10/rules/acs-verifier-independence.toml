@@ -1,0 +1,60 @@
+# L10 rule distilled from Agentic Coding School
+# name: Closing the Loop — Verifier Independence
+# chapter: Closing the Loop
+# class: tac (canonical)
+# source: https://www.agenticcoding.school/member/class/fundamental-techniques
+# run_id: acs-20260729T183655Z
+# status: distilled-v3
+
+[rule]
+id = "acs.verifier-independence"
+title = "Closing the Loop — Verifier Independence"
+domain = "agentic-coding-school"
+chapter = "Closing the Loop"
+class = "tac-canonical"
+
+trigger = "a build, edit, or agent task is being claimed as 'done'."
+
+applies_when = """
+any agent has produced an artifact and is reporting completion. Includes
+all of: code edits, build outputs, scraped datasets, distilled skills,
+generated documents, ProofPackets.
+"""
+
+rule_body = """
+Per the Agentic Coding School (Techniques / Debugging & Verifying Output)
+and TAC v2's `tac-closing-loop`, the verifier MUST be independent of the
+builder. The same agent cannot be both.
+
+  1. Builder produces the artifact.
+  2. Verifier (a different agent, model, or human) inspects the artifact
+     against the success criteria.
+  3. Verdict is PASS / FAIL / FEEDBACK — never 'looks good to me'.
+
+In RIG this is operationalized by:
+  - The `tac-closing-loop` skill (mandatory on every build pipeline).
+  - The ProofPacket schema requires an independent verifier hash.
+  - Builder + Verifier roles are never combined into one agent loop.
+"""
+
+evidence = """
+source: https://www.agenticcoding.school/member/class/fundamental-techniques
+references:
+  - Techniques / Debugging & Verifying Output chapter
+  - tac-closing-loop (existing RIG skill)
+related_lessons:
+  - Just Run It Again
+  - Evaluating Code Review Tools
+"""
+
+[verification]
+gates = [
+  "ProofPacket contains an independent verifier hash",
+  "builder agent and verifier agent are distinct",
+  "verdict is one of PASS / FAIL / FEEDBACK, never 'looks good'",
+]
+
+[provenance]
+run_id = "acs-20260729T183655Z"
+distilled_at = "2026-07-29T19:55:45+00:00"
+distilled_by = "distill_v3.py"

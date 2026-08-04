@@ -1,0 +1,61 @@
+# L10 rule distilled from Agentic Coding School
+# name: Stay Under 50% Context Usage
+# chapter: Session & Context Management
+# class: fundamental-techniques
+# source: https://www.agenticcoding.school/member/class/fundamental-techniques
+# run_id: acs-20260729T183655Z
+# status: distilled-v3
+
+[rule]
+id = "acs.context-budget"
+title = "Stay Under 50% Context Usage"
+domain = "agentic-coding-school"
+chapter = "Session & Context Management"
+class = "fundamental-techniques"
+
+trigger = "an agent task is about to be sent, or context usage is approaching threshold."
+
+applies_when = """
+the agent has a measurable context budget (token count or % of window) and
+the task duration or tool-call volume is non-trivial.
+"""
+
+rule_body = """
+The Agentic Coding School corpus (Techniques / Session & Context Management)
+establishes a hard context budget: stay under 50% of the model window for the
+ongoing task. Beyond that threshold, the model's recall degrades and the
+agent's output becomes unreliable.
+
+Apply this rule in RIG by:
+  1. Before any non-trivial task, estimate the prompt + expected tool-call
+     output against the model window.
+  2. If estimated usage > 50%, prefer /compact, plan a sub-task split, or
+     start a fresh session.
+  3. Log the context-usage decision in the per-task ProofPacket.
+
+See source lesson for the canonical explanation. The school's companion
+techniques (Compaction, Auto Compact and Handoff, Context Switching) are the
+operational levers — this rule is the constraint they enforce.
+"""
+
+evidence = """
+source: https://www.agenticcoding.school/member/class/fundamental-techniques
+references:
+  - Long Context Failure: /member/class/fundamental-techniques
+  - Economising with Prompt Cache: /member/class/fundamental-techniques
+related_lessons:
+  - Context Switching (fundamental-techniques)
+  - Compaction (claude-code)
+"""
+
+[verification]
+gates = [
+  "context budget estimate is logged before non-trivial tasks",
+  "Compaction or session reset is triggered when estimate > 50%",
+  "ProofPacket records the context-usage decision",
+]
+
+[provenance]
+run_id = "acs-20260729T183655Z"
+distilled_at = "2026-07-29T19:55:45+00:00"
+distilled_by = "distill_v3.py"

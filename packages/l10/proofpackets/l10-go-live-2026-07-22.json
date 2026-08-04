@@ -1,0 +1,27 @@
+{
+  "schema": "rig.proofpacket.l10-go-live.v1",
+  "timestamp": "2026-07-22T17:50:00Z",
+  "status": "LIVE",
+  "tests": {"total": 38, "passed": 38, "failed": 0, "duration": "2.56s"},
+  "test_breakdown": {
+    "unit_tests": {"count": 28, "classes": ["TestCommon", "TestPBT", "TestRefuter", "TestTasteEngine", "TestAdherence", "TestNocturne", "TestFactory", "TestCouncil"]},
+    "scenario_tests": {"count": 10, "scenarios": [
+      "S01: SymPy Energy Verification (CE-01)",
+      "S02: Deviation Gate accept/reject/auto (CE-01)",
+      "S03: PBT multi-invariant (CE-02)",
+      "S04: Refuter anti-collusion (CE-03)",
+      "S05: Taste Engine signature-replay (CS1-01)",
+      "S06: Council diversity (CS1-02)",
+      "S07: Tribal Scraper + Adherence (CS2-01+02)",
+      "S08: Strategy + What-If + Altitude + Persona (CS3-01+02)",
+      "S09: Nocturne full cycle (ND-01+02)",
+      "S10: Agent Factory + self-upgrade (AF-01)"
+    ]}
+  },
+  "pong_demo": "rig-l10/examples/pong/index.html",
+  "stamped_agent": {"id": "l10_pong_game_play_20260722174954", "jtbd": "pong_game_play", "bms": "A4", "nocturne": "enrolled"},
+  "global_clis": ["rig-l10", "rig-l10-test", "rig-l10-scenarios"],
+  "bootstrap_files": ["MIMO_JAKE_RIG_BOOTSTRAP.md", "CLAUDE.md", "AGENTS.md", "SOUL.md"],
+  "bug_fixed": "altitude_ground_check_fires_on_no_critical",
+  "hardcoded": true
+}

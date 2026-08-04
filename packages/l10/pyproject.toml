@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "rig-l10"
+version = "0.1.0"
+description = "RIG L10 Self-Evolving Harness Stack — Certainty Engine, Cognition Stack, Nocturne, Agent Factory"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "Proprietary"}
+authors = [{name = "Mike Rodgers"}]
+dependencies = [
+    "sympy>=1.14",
+]
+
+[project.scripts]
+rig-l10 = "src.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]

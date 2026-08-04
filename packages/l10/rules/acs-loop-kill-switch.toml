@@ -1,0 +1,59 @@
+# L10 rule distilled from Agentic Coding School
+# name: Every Loop Needs a Kill Switch
+# chapter: Loop Engineering
+# class: loopy-ai
+# source: https://www.agenticcoding.school/member/class/loopy-ai
+# run_id: acs-20260729T183655Z
+# status: distilled-v3
+
+[rule]
+id = "acs.loop-kill-switch"
+title = "Every Loop Needs a Kill Switch"
+domain = "agentic-coding-school"
+chapter = "Loop Engineering"
+class = "loopy-ai"
+
+trigger = "a RIG loop is being defined or extended (recurring cron, agent team, scout-worker-synthesizer, subagent swarm)."
+
+applies_when = """
+any autonomous or recurring loop is being designed — including cron jobs,
+goal harnesses, agent teams, scout loops, subagent swarms, and retry loops.
+"""
+
+rule_body = """
+Per the Agentic Coding School (Loopy AI / Loop Engineering), every loop
+must have:
+  1. A kill switch — a condition that stops the loop immediately.
+  2. A cooldown — minimum interval between iterations.
+  3. A verifier — independent check that the loop's output is correct.
+
+This is non-negotiable. No loop ships without these three. RIG operationalizes
+this rule in every goal-harness file under `.jake/goal-harnesses/`.
+
+Apply by:
+  1. Every goal-harness file MUST declare `kill_switch`, `cooldown_seconds`,
+     and `verifier` in its frontmatter.
+  2. Every cron job MUST have a max-iteration cap and a budget cap.
+  3. Every scout/worker/synthesizer pattern MUST have an independent
+     verifier node.
+"""
+
+evidence = """
+source: https://www.agenticcoding.school/member/class/loopy-ai
+references:
+  - The Loop Engineering class
+related_lessons:
+  - Verification loops across the corpus
+"""
+
+[verification]
+gates = [
+  "every new goal-harness declares kill_switch + cooldown + verifier",
+  "every new cron job has max-iteration cap and budget cap",
+  "ProofPacket references this rule",
+]
+
+[provenance]
+run_id = "acs-20260729T183655Z"
+distilled_at = "2026-07-29T19:55:45+00:00"
+distilled_by = "distill_v3.py"
