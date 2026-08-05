@@ -1,6 +1,8 @@
 # jake-studio
 
 > Local-first operator layer that routes work across people, models, tools, and verification gates — with the L10 self-evolving harness as the cognition / certainty substrate.
+**Outcome:** `python3 -m compileall` smoke verifies 4 L10 harness modules offline, with the Builder/Verifier loop capped at max 3 feedback iterations.
+
 
 ![status](https://img.shields.io/badge/status-public-studio-blue)
 ![l10](https://img.shields.io/badge/L10-harness-included-brightgreen)
