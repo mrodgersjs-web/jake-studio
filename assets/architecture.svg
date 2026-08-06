@@ -1,0 +1,101 @@
+<svg width="1200" height="400" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .kicker{font-family:'JetBrains Mono',monospace;font-size:11px;fill:#C8A96E;letter-spacing:3px;text-transform:uppercase}
+      .title{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:27px;fill:#F5F0EB}
+      .label{font-family:'Hanken Grotesk','Helvetica Neue',sans-serif;font-size:12px;fill:#F5F0EB;letter-spacing:1px}
+      .mono{font-family:'JetBrains Mono','SF Mono',monospace;font-size:10.5px;fill:#A09890}
+      .mono-gold{font-family:'JetBrains Mono','SF Mono',monospace;font-size:11px;fill:#C8A96E}
+      .caption{font-family:'JetBrains Mono',monospace;font-size:10px;fill:#635D57;letter-spacing:2px;text-transform:uppercase}
+    </style>
+    <radialGradient id="glowStrong" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#C8A96E" stop-opacity="0.9"/><stop offset="60%" stop-color="#C8A96E" stop-opacity="0.25"/><stop offset="100%" stop-color="#C8A96E" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ambient" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="#181310" stop-opacity="1"/><stop offset="100%" stop-color="#0A0806" stop-opacity="1"/>
+    </radialGradient>
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#C8A96E"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="400" fill="url(#ambient)"/>
+
+  <text x="60" y="42" class="kicker">JAKE STUDIO</text>
+  <text x="60" y="72" class="title">One operator, thirty-eight watching satellites</text>
+
+  <g transform="translate(600,230)">
+    <!-- orbit rings -->
+    <ellipse rx="140" ry="140" fill="none" stroke="#A09890" stroke-width="1" stroke-dasharray="2 5" opacity="0.35"/>
+    <ellipse rx="290" ry="105" fill="none" stroke="#C8A96E" stroke-width="1" stroke-dasharray="1 4" opacity="0.4"/>
+
+    <!-- operator center -->
+    <circle r="52" fill="url(#glowStrong)"/>
+    <circle r="24" fill="#141210" stroke="#C8A96E" stroke-width="2.4" filter="url(#softGlow)"/>
+    <text y="4" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C8A96E">OP</text>
+    <text y="-70" text-anchor="middle" class="label">OPERATOR CENTER</text>
+
+    <!-- L10 harness ring label -->
+    <text x="0" y="-108" text-anchor="middle" class="mono-gold" font-size="10" letter-spacing="1.5">L10 HARNESS</text>
+
+    <!-- 38 satellites distributed around outer ellipse, rendered as ~19 dots doubled visually with tick marks for density -->
+    <g fill="#C8A96E">
+      <!-- generate points around ellipse rx=290 ry=105 -->
+      <circle cx="290" cy="0" r="4"/>
+      <circle cx="275" cy="-33" r="4"/>
+      <circle cx="230" cy="-63" r="4"/>
+      <circle cx="164" cy="-85" r="4"/>
+      <circle cx="84" cy="-99" r="4"/>
+      <circle cx="0" cy="-105" r="4"/>
+      <circle cx="-84" cy="-99" r="4"/>
+      <circle cx="-164" cy="-85" r="4"/>
+      <circle cx="-230" cy="-63" r="4"/>
+      <circle cx="-275" cy="-33" r="4"/>
+      <circle cx="-290" cy="0" r="4"/>
+      <circle cx="-275" cy="33" r="4"/>
+      <circle cx="-230" cy="63" r="4"/>
+      <circle cx="-164" cy="85" r="4"/>
+      <circle cx="-84" cy="99" r="4"/>
+      <circle cx="0" cy="105" r="4"/>
+      <circle cx="84" cy="99" r="4"/>
+      <circle cx="164" cy="85" r="4"/>
+      <circle cx="230" cy="63" r="4"/>
+      <circle cx="275" cy="33" r="4"/>
+    </g>
+    <g fill="#A09890" opacity="0.7">
+      <circle cx="257" cy="-16" r="2.6"/>
+      <circle cx="204" cy="-49" r="2.6"/>
+      <circle cx="125" cy="-77" r="2.6"/>
+      <circle cx="43" cy="-104" r="2.6"/>
+      <circle cx="-43" cy="-104" r="2.6"/>
+      <circle cx="-125" cy="-77" r="2.6"/>
+      <circle cx="-204" cy="-49" r="2.6"/>
+      <circle cx="-257" cy="-16" r="2.6"/>
+      <circle cx="-257" cy="16" r="2.6"/>
+      <circle cx="-204" cy="49" r="2.6"/>
+      <circle cx="-125" cy="77" r="2.6"/>
+      <circle cx="-43" cy="104" r="2.6"/>
+      <circle cx="43" cy="104" r="2.6"/>
+      <circle cx="125" cy="77" r="2.6"/>
+      <circle cx="204" cy="49" r="2.6"/>
+      <circle cx="257" cy="16" r="2.6"/>
+      <circle cx="284" cy="-17" r="2.6"/>
+      <circle cx="284" cy="17" r="2.6"/>
+    </g>
+
+    <!-- closed loop arrow curling back to operator -->
+    <path d="M0,105 C -60,150 -170,150 -230,90" fill="none" stroke="#C8A96E" stroke-width="2" marker-end="url(#arrow)" opacity="0.85"/>
+  </g>
+
+  <text x="1140" y="150" text-anchor="end" class="label">38 TEST SATELLITES</text>
+  <text x="1140" y="167" text-anchor="end" class="mono">continuous watch</text>
+
+  <text x="60" y="330" class="mono-gold">CLOSED LOOP</text>
+  <text x="60" y="347" class="mono">observations return to the operator, every cycle</text>
+
+  <line x1="60" y1="360" x2="1140" y2="360" stroke="#A09890" stroke-width="1" opacity="0.12"/>
+  <text x="60" y="382" class="caption">nothing orbits without reporting back</text>
+</svg>
