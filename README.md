@@ -7,6 +7,7 @@
 ![status](https://img.shields.io/badge/status-public-studio-blue)
 ![l10](https://img.shields.io/badge/L10-harness-included-brightgreen)
 ![loop](https://img.shields.io/badge/Builder%2FVerifier-closed%20loop-0b3d2e)
+[![smoke CI](https://img.shields.io/github/actions/workflow/status/mrodgersjs-web/jake-studio/smoke.yml?branch=main)](https://github.com/mrodgersjs-web/jake-studio/actions/workflows/smoke.yml)
 
 ## Employer summary
 
