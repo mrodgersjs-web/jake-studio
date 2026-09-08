@@ -4,10 +4,10 @@ Version: 2026-07-22.1
 Owner: Mike Rodgers
 Status: ACTIVE — SIGNED
 Scope: All RIG harnesses (Claude Code, Codex, Hermes, Jake)
-Module: `/Users/rig128gb/rig-l10/src/`
+Module: `$HOME/rig-l10/src/`
 Companion doctrines:
-  - `/Users/rig128gb/.rig/agent-doctrine/RIG_TAC_DOCTRINE.md` (load first)
-  - `/Users/rig128gb/.rig/agent-doctrine/JAKE_OPENSPEC_BDD_WORK_DOCTRINE.md` (load second)
+  - `$HOME/.rig/agent-doctrine/RIG_TAC_DOCTRINE.md` (load first)
+  - `$HOME/.rig/agent-doctrine/JAKE_OPENSPEC_BDD_WORK_DOCTRINE.md` (load second)
 
 ---
 
@@ -145,7 +145,7 @@ from common import composite_sigma, deviation_gate, ProofPacket
 | Expected Free Energy | G(π) = E_surprise + D_KL(q‖p) | Action selection |
 | Composite Sigma | σ = 0.3·d_struct + 0.7·d_behavior | Deviation score |
 
-**Mandatory doctrine:** `/Users/rig128gb/Documents/JakeStudio/Doctrine/sympy-math-mcp-mandatory.md`
+**Mandatory doctrine:** `$HOME/Documents/JakeStudio/Doctrine/sympy-math-mcp-mandatory.md`
 
 ---
 
@@ -202,7 +202,7 @@ rig-l10 info           # Module info
 ## Python Import
 
 ```python
-import sys; sys.path.insert(0, "/Users/rig128gb/rig-l10/src")
+import sys; sys.path.insert(0, "$HOME/rig-l10/src")
 from common import ProofPacket, robust_madz, deviation_gate, anti_goodhart_check
 from certainty_engine.pbt import PropertyBasedTester
 from certainty_engine.refuter import RefuterAgent
@@ -232,9 +232,9 @@ from agent_factory.factory import AgentFactory
 
 ## First Build Reference
 
-Pong game demo: `/Users/rig128gb/rig-l10/examples/pong/index.html`
-Test suite: `/Users/rig128gb/rig-l10/tests/test_l10.py` (38/38 pass)
-Proof packets: `/Users/rig128gb/rig-l10/proofpackets/`
+Pong game demo: `$HOME/rig-l10/examples/pong/index.html`
+Test suite: `$HOME/rig-l10/tests/test_l10.py` (38/38 pass)
+Proof packets: `$HOME/rig-l10/proofpackets/`
 
 ---
 

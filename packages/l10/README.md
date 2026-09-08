@@ -1,6 +1,6 @@
 # RIG L10 Self-Evolving Harness Stack
 
-**Status:** LIVE | **Tests:** 38/38 pass | **Module:** `/Users/rig128gb/rig-l10/src/`
+**Status:** LIVE | **Tests:** 38/38 pass | **Module:** `$HOME/rig-l10/src/`
 
 ## Quick Start
 ```bash
@@ -16,5 +16,5 @@ rig-l10-scenarios     # Run 10 end-to-end scenarios
 - `agent_factory` — Deterministic agent stamp
 
 ## Doctrine
-- `/Users/rig128gb/.rig/agent-doctrine/RIG_L10_HARNESS_STACK_DOCTRINE.md`
-- `/Users/rig128gb/rig-operating-procedures/docs/l10-harness-stack.md`
+- `$HOME/.rig/agent-doctrine/RIG_L10_HARNESS_STACK_DOCTRINE.md`
+- `$HOME/rig-operating-procedures/docs/l10-harness-stack.md`

@@ -2,7 +2,7 @@
 
 Tests written FIRST. Implementation follows.
 Run: python3 -m pytest tests/test_chassis.py -v
-Or:  cd /Users/rig128gb/rig-l10 && python3 tests/test_chassis.py
+Or:  cd $HOME/rig-l10 && python3 tests/test_chassis.py
 """
 import sys
 import os
