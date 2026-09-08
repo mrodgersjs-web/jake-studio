@@ -9,10 +9,12 @@ Every L10 module imports from here. This is the single source of truth for:
 - Anti-Goodhart invariants
 """
 from __future__ import annotations
-import json
-import subprocess
 import hashlib
-from dataclasses import dataclass, field, asdict
+import json
+import math
+import statistics
+import subprocess
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
@@ -89,29 +91,72 @@ class ProofPacket:
         self.packet_hash = "sha256:" + hashlib.sha256(content.encode()).hexdigest()
         return self.packet_hash
 
-# ── Energy Computation (SymPy substrate) ───────────────────────────────
+# ── Energy Computation ─────────────────────────────────────────────────
+def _local_energy(formula: str, **kwargs) -> dict:
+    """Execute the public formulas without the workstation-only MathExec."""
+    try:
+        if formula == "robust-madz":
+            values = [float(value) for value in str(kwargs["baseline"]).split(",")]
+            median = statistics.median(values)
+            mad = statistics.median(abs(value - median) for value in values)
+            sigma = 0.0 if mad == 0 and float(kwargs["score"]) == median else (
+                math.inf if mad == 0 else 0.6745 * (float(kwargs["score"]) - median) / mad
+            )
+            returned_value = sigma
+        elif formula == "surprisal":
+            probability = float(kwargs["probability"])
+            if not 0 < probability <= 1:
+                raise ValueError("probability must be in (0, 1]")
+            returned_value = -math.log(probability)
+        elif formula == "blend-value":
+            returned_value = (
+                0.4 * float(kwargs["novelty"])
+                + 0.5 * float(kwargs["systematicity"])
+                - 0.1 * float(kwargs["inconsistency"])
+            )
+        elif formula == "expected-free-energy":
+            returned_value = (
+                float(kwargs["expected_surprise"]) + float(kwargs["kl_divergence"])
+            )
+        elif formula == "composite-sigma":
+            returned_value = (
+                0.3 * float(kwargs["d_struct"]) + 0.7 * float(kwargs["d_behavior"])
+            )
+        else:
+            raise ValueError(f"unsupported public formula: {formula}")
+        result = {
+            "formula_id": formula,
+            "verdict": "PASS",
+            "returned_value": returned_value,
+            "substrate": "python-stdlib",
+            "agreement_delta": 0.0,
+        }
+        if formula == "robust-madz":
+            result["sigma"] = returned_value
+        result["packet_hash"] = "sha256:" + hashlib.sha256(
+            json.dumps(result, sort_keys=True).encode()
+        ).hexdigest()
+        return result
+    except (KeyError, TypeError, ValueError) as exc:
+        return {"verdict": "ERROR", "error": str(exc)[:500]}
+
+
 def run_energy(formula: str, **kwargs) -> dict:
-    """Execute an energy function via rig-math-exec (SymPy MCP substrate).
-    
-    Args:
-        formula: One of robust-madz, blend-value, e-total, expected-free-energy,
-                 composite-sigma, surprisal, poisson-merge
-        **kwargs: Formula-specific arguments
-    
-    Returns:
-        Dict with verdict, returned_value, packet_hash, agreement_delta
-    """
+    """Execute an energy formula with MathExec or the hermetic public fallback."""
+    if not RIG_MATHEXEC.is_file():
+        return _local_energy(formula, **kwargs)
+
     cmd = [str(RIG_MATHEXEC), formula]
-    for k, v in kwargs.items():
-        cmd.extend([f"--{k.replace('_', '-')}", str(v)])
-    
+    for key, value in kwargs.items():
+        cmd.extend([f"--{key.replace('_', '-')}", str(value)])
+
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
         if result.returncode == 0:
             return json.loads(result.stdout)
         return {"verdict": "ERROR", "error": result.stderr[:500]}
-    except Exception as e:
-        return {"verdict": "ERROR", "error": str(e)[:500]}
+    except Exception as exc:
+        return {"verdict": "ERROR", "error": str(exc)[:500]}
 
 def robust_madz(score: float, baseline: list[float]) -> dict:
     """RobustMADZ = 0.6745 * (score - median) / MAD. Deviation gate."""

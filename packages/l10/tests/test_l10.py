@@ -4,6 +4,8 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 import unittest
+from pathlib import Path
+from unittest import mock
 
 class TestCommon(unittest.TestCase):
     """Test shared common module."""
@@ -13,6 +15,15 @@ class TestCommon(unittest.TestCase):
         r = robust_madz(7.5, [3.2, 4.1, 3.8, 4.5, 3.9, 4.0, 3.7, 4.3])
         self.assertEqual(r["verdict"], "PASS")
         self.assertIn("sigma", r)
+    def test_energy_fallback_without_workstation_binary(self):
+        import common
+
+        with mock.patch.object(common, "RIG_MATHEXEC", Path("/does/not/exist")):
+            result = common.surprisal(0.15)
+
+        self.assertEqual(result["verdict"], "PASS")
+        self.assertAlmostEqual(result["returned_value"], 1.8971, places=2)
+
     
     def test_surprisal(self):
         from common import surprisal
