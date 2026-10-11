@@ -18,13 +18,34 @@ class TestCommon(unittest.TestCase):
     def test_energy_fallback_without_workstation_binary(self):
         import common
 
-        with mock.patch.object(common, "RIG_MATHEXEC", Path("/does/not/exist")):
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("JAKE_STUDIO_MATH_EXEC", None)
             result = common.surprisal(0.15)
 
         self.assertEqual(result["verdict"], "PASS")
+        self.assertEqual(result["substrate"], "python-stdlib")
         self.assertAlmostEqual(result["returned_value"], 1.8971, places=2)
 
-    
+    def test_home_binary_ignored_unless_opted_in(self):
+        import common
+        import stat
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as home:
+            fake = Path(home) / ".rig" / "bin" / "rig-math-exec"
+            fake.parent.mkdir(parents=True)
+            fake.write_text("#!/bin/sh\necho broken >&2\nexit 7\n")
+            fake.chmod(fake.stat().st_mode | stat.S_IXUSR)
+            env = {"HOME": home, "USERPROFILE": home}
+            with mock.patch.dict(os.environ, env):
+                os.environ.pop("JAKE_STUDIO_MATH_EXEC", None)
+                self.assertIsNone(common.math_exec_path())
+                self.assertEqual(common.surprisal(0.15)["substrate"], "python-stdlib")
+                # explicit opt-in is honoured (and the broken binary then errors)
+                os.environ["JAKE_STUDIO_MATH_EXEC"] = str(fake)
+                self.assertEqual(common.math_exec_path(), fake)
+                self.assertEqual(common.surprisal(0.15)["verdict"], "ERROR")
+
     def test_surprisal(self):
         from common import surprisal
         r = surprisal(0.15)
