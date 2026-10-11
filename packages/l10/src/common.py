@@ -1,7 +1,7 @@
 """RIG L10 Common — Shared types, energy functions, and invariants.
 
 Every L10 module imports from here. This is the single source of truth for:
-- Energy computation (wraps rig-math-exec SymPy substrate)
+- Energy computation (stdlib by default; optional external engine via JAKE_STUDIO_MATH_EXEC)
 - ProofPacket types
 - GEV roles (Generator ≠ Evaluator ≠ Verifier)
 - BMS autonomy bands (A1..A4)
@@ -12,6 +12,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import statistics
 import subprocess
 from dataclasses import asdict, dataclass, field
@@ -21,8 +22,19 @@ from pathlib import Path
 from typing import Any, Optional
 
 # ── Paths ──────────────────────────────────────────────────────────────
-RIG_MATHEXEC = Path.home() / ".rig" / "bin" / "rig-math-exec"
-PACKET_STORE = Path.home() / ".rig" / "global" / "mathexec" / "packets"
+# The external MathExec engine is strictly opt-in: set JAKE_STUDIO_MATH_EXEC to
+# the path of an executable. Nothing under the user's home is ever probed, so the
+# public build behaves the same on every machine by default (stdlib fallback).
+MATH_EXEC_ENV = "JAKE_STUDIO_MATH_EXEC"
+
+
+def math_exec_path() -> Optional[Path]:
+    """Return the opted-in external engine path, or None to use the stdlib fallback."""
+    raw = os.environ.get(MATH_EXEC_ENV, "").strip()
+    if not raw:
+        return None
+    path = Path(raw).expanduser()
+    return path if path.is_file() else None
 
 # ── BMS Autonomy Bands ─────────────────────────────────────────────────
 class BMS(Enum):
@@ -142,11 +154,12 @@ def _local_energy(formula: str, **kwargs) -> dict:
 
 
 def run_energy(formula: str, **kwargs) -> dict:
-    """Execute an energy formula with MathExec or the hermetic public fallback."""
-    if not RIG_MATHEXEC.is_file():
+    """Execute an energy formula: stdlib fallback unless JAKE_STUDIO_MATH_EXEC opts in."""
+    engine = math_exec_path()
+    if engine is None:
         return _local_energy(formula, **kwargs)
 
-    cmd = [str(RIG_MATHEXEC), formula]
+    cmd = [str(engine), formula]
     for key, value in kwargs.items():
         cmd.extend([f"--{key.replace('_', '-')}", str(value)])
 
