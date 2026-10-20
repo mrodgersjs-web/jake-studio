@@ -137,7 +137,9 @@ class PropertyBasedTester:
         
         for name, prop in targets.items():
             failures = []
-            for i in range(prop.max_examples):
+            examples_run = 0
+            for _ in range(prop.max_examples):
+                examples_run += 1
                 try:
                     input_val = prop.generator()
                     if not prop.check_fn(input_val):
@@ -153,7 +155,8 @@ class PropertyBasedTester:
             
             result = PBTResult(
                 property_name=name,
-                samples_tested=min(prop.max_examples, prop.min_samples + i),
+                samples_tested=min(prop.max_examples,
+                                       prop.min_samples + examples_run - 1),
                 passed=len(failures) == 0,
                 failures=failures,
             )
