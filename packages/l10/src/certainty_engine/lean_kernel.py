@@ -17,14 +17,12 @@ Every one is a reward-hack; the kernel + independent theorem-authoring
 is the STRUCTURAL (not exhortative) mitigation.
 """
 from __future__ import annotations
-import json
 import re
 import subprocess
 import tempfile
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from pathlib import Path
 from typing import Optional
 from common import ProofPacket, VerifyLevel
 
