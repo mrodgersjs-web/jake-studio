@@ -197,7 +197,7 @@ class TestWorkflowFSM(unittest.TestCase):
 
     def test_failure_state_is_terminal(self):
         """POLICY_DENIED has no forward transitions."""
-        from chassis.fsm import WorkflowFSM, RunState
+        from chassis.fsm import WorkflowFSM, RunState, StateTransitionError
 
         fsm = WorkflowFSM()
         fsm.transition_to(RunState.VALIDATE_INPUTS, actor="test")
