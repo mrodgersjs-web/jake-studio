@@ -7,9 +7,6 @@ generators to hunt inputs that break them, shrinking to minimal failure.
 Defense against weak oracles — catches what the LLM-judge rubber-stamps.
 """
 from __future__ import annotations
-import json
-import random
-import math
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
