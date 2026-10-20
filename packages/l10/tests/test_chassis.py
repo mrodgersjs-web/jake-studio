@@ -6,11 +6,8 @@ Or:  cd $HOME/rig-l10 && python3 tests/test_chassis.py
 """
 import sys
 import os
-import json
-import hashlib
 import tempfile
 import uuid
-from pathlib import Path
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
@@ -22,7 +19,7 @@ class TestHarnessRegistry(unittest.TestCase):
 
     def test_register_valid_harness(self):
         """Harness with all 6 components gets registered with signature."""
-        from chassis.harness import HarnessRegistry, Harness, HarnessTuple
+        from chassis.harness import HarnessRegistry, Harness
         from chassis.harness import Environment, ToolAllowlist, ContextSpec, StateSpec, LoopSpec, VerificationSpec
 
         registry = HarnessRegistry()
@@ -45,7 +42,7 @@ class TestHarnessRegistry(unittest.TestCase):
     def test_reject_incomplete_harness(self):
         """Harness missing a component raises ValidationError."""
         from pydantic import ValidationError
-        from chassis.harness import Harness, HarnessTuple
+        from chassis.harness import Harness
         from chassis.harness import Environment, ToolAllowlist, ContextSpec, StateSpec, LoopSpec
 
         with self.assertRaises(ValidationError):
@@ -82,7 +79,7 @@ class TestHarnessRegistry(unittest.TestCase):
 
     def test_harness_signature_is_deterministic(self):
         """Same harness content produces same signature."""
-        from chassis.harness import Harness, HarnessTuple
+        from chassis.harness import Harness
         from chassis.harness import Environment, ToolAllowlist, ContextSpec, StateSpec, LoopSpec, VerificationSpec
 
         env = Environment(role="generator", objective="test", non_goals=[], boundaries=[])
@@ -104,7 +101,6 @@ class TestRunPacket(unittest.TestCase):
     def test_create_valid_packet(self):
         """RunPacket has all required fields."""
         from chassis.packet import RunPacket
-        from chassis.harness import Environment
 
         packet = RunPacket(
             harness_name="test-harness",
@@ -274,7 +270,6 @@ class TestStateStore(unittest.TestCase):
     def test_budget_tracking(self):
         """Budget consumed and remaining are tracked."""
         from chassis.store import StateStore
-        from chassis.fsm import RunState
 
         with tempfile.TemporaryDirectory() as tmpdir:
             store = StateStore(db_path=os.path.join(tmpdir, "test.db"))
@@ -498,7 +493,6 @@ class TestIntegration(unittest.TestCase):
         from chassis.store import StateStore
         from chassis.tools import ToolRegistry, ToolDefinition, SideEffectClass
         from chassis.policy import PolicyEngine, PolicyContext
-        from chassis.gev import GEVRunner
 
         # 1. Register harness
         registry = HarnessRegistry()
