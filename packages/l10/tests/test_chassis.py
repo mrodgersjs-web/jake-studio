@@ -44,10 +44,11 @@ class TestHarnessRegistry(unittest.TestCase):
 
     def test_reject_incomplete_harness(self):
         """Harness missing a component raises ValidationError."""
+        from pydantic import ValidationError
         from chassis.harness import Harness, HarnessTuple
         from chassis.harness import Environment, ToolAllowlist, ContextSpec, StateSpec, LoopSpec
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValidationError):
             Harness(
                 name="bad",
                 version="1.0.0",
