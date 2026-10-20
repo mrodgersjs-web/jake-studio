@@ -1,0 +1,36 @@
+name: Bug report
+description: Report something broken in mesh-studio
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: Include the exact command you ran and its JSON output.
+      placeholder: "rig-mesh status ... returned ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "rig-mesh version output, e.g. 1.1.0"
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version and OS
+      placeholder: "Python 3.12.7, macOS 15"
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: Registry customizations, environment variables, screenshots of JSON output.
