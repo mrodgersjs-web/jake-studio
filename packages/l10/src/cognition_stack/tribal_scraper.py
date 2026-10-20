@@ -10,13 +10,9 @@ Extends the Nocturne JTBD scraper from OUTCOME exemplars to PROCESS exemplars
 knowledge that lives in expert practice, not documentation.
 """
 from __future__ import annotations
-import json
-import math
-from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Optional
-from common import deviation_gate, run_energy, ProofPacket
+from common import deviation_gate
 
 @dataclass
 class ProcessStep:
