@@ -15,10 +15,9 @@ owner, and recovery route.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Optional, Dict, List, Callable
 
 
 class RunState(str, Enum):
@@ -95,7 +94,7 @@ class TransitionRule:
 
 
 # Valid state transitions
-VALID_TRANSITIONS: Dict[RunState, set[RunState]] = {
+VALID_TRANSITIONS: dict[RunState, set[RunState]] = {
     # Primary flow
     RunState.INTAKE: {RunState.VALIDATE_INPUTS, RunState.BLOCKED_INPUT,
                       RunState.POLICY_DENIED},
@@ -114,7 +113,8 @@ VALID_TRANSITIONS: Dict[RunState, set[RunState]] = {
     RunState.VERIFY: {RunState.HUMAN_APPROVAL, RunState.COMMIT,
                       RunState.VERIFICATION_FAILED, RunState.HUMAN_REJECTED},
     RunState.HUMAN_APPROVAL: {RunState.COMMIT, RunState.HUMAN_REJECTED},
-    RunState.COMMIT: {RunState.RECORD_OUTCOME, RunState.ROLLBACK_REQUIRED},
+    RunState.COMMIT: {RunState.RECORD_OUTCOME, RunState.ROLLBACK_REQUIRED,
+                      RunState.CLOSED},
     RunState.RECORD_OUTCOME: {RunState.CLOSED},
     RunState.CLOSED: set(),  # Terminal
     # Failure states are terminal
@@ -136,7 +136,7 @@ class StateSnapshot:
     state: RunState
     actor: str
     timestamp: str
-    reason: Optional[str]
+    reason: str | None
     transition_count: int
 
 
@@ -153,12 +153,12 @@ class WorkflowFSM:
 
     def __init__(self):
         self.current_state: RunState = RunState.INTAKE
-        self.state_history: List[StateSnapshot] = []
+        self.state_history: list[StateSnapshot] = []
         self._transition_count: int = 0
         self._record_snapshot("system", "initial")
 
     def transition_to(self, target: RunState, actor: str,
-                      reason: Optional[str] = None) -> None:
+                      reason: str | None = None) -> None:
         """Transition to a new state.
 
         Raises StateTransitionError if the transition is invalid.
@@ -172,9 +172,10 @@ class WorkflowFSM:
                 f"Attempted: {current.value} → {target.value}"
             )
 
-        # Check if transition is valid
+        # Check if transition is valid. Failure states are reachable from
+        # any non-terminal state: a run can fail anywhere.
         valid_targets = VALID_TRANSITIONS.get(current, set())
-        if target not in valid_targets:
+        if target not in valid_targets and target not in FAILURE_STATES:
             raise StateTransitionError(
                 f"Invalid transition: {current.value} → {target.value}. "
                 f"Valid targets from {current.value}: "
@@ -200,7 +201,7 @@ class WorkflowFSM:
         self.current_state = target
         self._record_snapshot(actor, f"FORCED: {reason}")
 
-    def get_history(self) -> List[StateSnapshot]:
+    def get_history(self) -> list[StateSnapshot]:
         """Return the full state transition history."""
         return list(self.state_history)
 
@@ -208,13 +209,14 @@ class WorkflowFSM:
         """Check if a transition to target is valid from current state."""
         if self.current_state in TERMINAL_STATES:
             return False
-        return target in VALID_TRANSITIONS.get(self.current_state, set())
+        return (target in VALID_TRANSITIONS.get(self.current_state, set())
+                or target in FAILURE_STATES)
 
     def is_terminal(self) -> bool:
         """Check if the current state is terminal."""
         return self.current_state in TERMINAL_STATES
 
-    def get_transition_rules(self) -> List[TransitionRule]:
+    def get_transition_rules(self) -> list[TransitionRule]:
         """Return all valid transition rules for the current state."""
         rules = []
         for target in VALID_TRANSITIONS.get(self.current_state, set()):
@@ -227,7 +229,7 @@ class WorkflowFSM:
             ))
         return rules
 
-    def _record_snapshot(self, actor: str, reason: Optional[str]) -> None:
+    def _record_snapshot(self, actor: str, reason: str | None) -> None:
         """Record a state snapshot."""
         self.state_history.append(StateSnapshot(
             state=self.current_state,
