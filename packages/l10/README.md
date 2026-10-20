@@ -5,13 +5,13 @@ testing, a refuter, a council of models, an overnight batch runner, and a
 deterministic agent factory. The name "L10" is internal shorthand; see the
 [glossary](../../docs/glossary.md) for plain-English names.
 
-**Status:** maintained | **Tests:** 72 passing | **Module:** `packages/l10/src/`
+**Status:** maintained | **Tests:** 73 passing | **Module:** `packages/l10/src/`
 
 ## Quick start
 
 ```bash
 pip install -e '.[dev]'
-pytest -q            # the 72-test suite
+pytest -q            # the 73-test suite
 rig-l10 doctor       # check the modules load
 ```
 

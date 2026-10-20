@@ -31,7 +31,7 @@ pytest -q
 Run these after install:
 
 ```bash
-pytest -q            # 72 passing
+pytest -q            # 73 passing
 ruff check .         # All checks passed
 rig-l10 doctor       # modules load, exit 0
 ```
