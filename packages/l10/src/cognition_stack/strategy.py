@@ -36,7 +36,7 @@ class StrategyTool:
     One harness, many YAMLs — Line A vs Line B differ only in
     Scenario Pack + Verifier weight vector.
     
-    The 1000x discipline: one engine, config per line.
+    The discipline: one engine, config per line.
     """
     
     def __init__(self):
