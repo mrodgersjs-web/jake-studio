@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Callable, Optional
-from common import ProofPacket, Confidence, run_energy
+from common import ProofPacket
 
 class InvariantType(Enum):
     ROUND_TRIP = "round_trip"           # decode(encode(x)) == x
