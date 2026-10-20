@@ -1,20 +1,47 @@
-# RIG L10 Self-Evolving Harness Stack
+# rig-l10 (the L10 harness)
 
-**Status:** LIVE | **Tests:** 38/38 pass | **Module:** `$HOME/rig-l10/src/`
+A Python toolkit for running agent work with verification built in: property
+testing, a refuter, a council of models, an overnight batch runner, and a
+deterministic agent factory. The name "L10" is internal shorthand; see the
+[glossary](../../docs/glossary.md) for plain-English names.
 
-## Quick Start
+**Status:** maintained | **Tests:** 72 passing | **Module:** `packages/l10/src/`
+
+## Quick start
+
 ```bash
-rig-l10-test          # Run 38-test suite
-rig-l10 doctor        # Check 12 modules + SymPy MCP
-rig-l10-scenarios     # Run 10 end-to-end scenarios
+pip install -e '.[dev]'
+pytest -q            # the 72-test suite
+rig-l10 doctor       # check the modules load
 ```
 
-## Modules
-- `certainty_engine` — PBT, Refuter, Lean Kernel
-- `cognition_stack` — Taste, Council, Tribal Scraper, Adherence, Strategy, What-If
-- `nocturne` — Nightly self-improvement daemon
-- `agent_factory` — Deterministic agent stamp
+## Modules (plain English)
 
-## Doctrine
-- `$HOME/.rig/agent-doctrine/RIG_L10_HARNESS_STACK_DOCTRINE.md`
-- `$HOME/rig-operating-procedures/docs/l10-harness-stack.md`
+- `certainty_engine` | property-based testing, a refuter, and a small
+  proof kernel for checking claims about code
+- `cognition_stack` | a taste scorer, a multi-model council, adherence and
+  strategy helpers, and a tribal-knowledge scraper
+- `nocturne` | overnight batch runner: the nightly self-improvement loop
+- `agent_factory` | stamps out agent definitions deterministically
+- `chassis` | the production runtime: sealed harnesses, typed run packets,
+  a workflow state machine, a durable state store, a tool registry with
+  side-effect gates, a policy engine, and role separation
+
+## Install
+
+```bash
+cd packages/l10
+python3 -m venv .venv && . .venv/bin/activate
+pip install -e '.[dev]'
+```
+
+## Development
+
+```bash
+pytest -q --cov
+ruff check .
+```
+
+## License
+
+MIT.
