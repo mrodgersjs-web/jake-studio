@@ -4,16 +4,22 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rig-l10"
-version = "0.1.1"
-description = "RIG L10 harness — certainty, cognition, nocturne, agent factory (public core)"
+version = "0.2.0"
+description = "RIG L10 harness: certainty checks, cognition helpers, an overnight batch runner, and an agent factory (public core)"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Mike Rodgers" }]
-dependencies = ["sympy>=1.12"]
+dependencies = ["sympy>=1.12", "pydantic>=2.0"]
 
 [project.optional-dependencies]
 test = ["pytest>=7.4"]
+dev = ["pytest>=7.4", "pytest-cov>=4", "ruff>=0.4"]
+
+[project.urls]
+Homepage = "https://github.com/mrodgersjs-web/jake-studio"
+Repository = "https://github.com/mrodgersjs-web/jake-studio"
+Issues = "https://github.com/mrodgersjs-web/jake-studio/issues"
 
 [project.scripts]
 rig-l10 = "cli:main"
@@ -25,6 +31,18 @@ py-modules = ["cli", "common"]
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["certainty_engine*", "cognition_stack*", "nocturne*", "agent_factory*", "chassis*", "agentic_doctrines*"]
+
+[tool.setuptools.package-data]
+"*" = ["py.typed"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "UP"]
+ignore = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
