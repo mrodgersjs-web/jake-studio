@@ -7,12 +7,11 @@ This is the verification ladder made explicit — do not pretend
 Level-4 judgment is Level-1 truth.
 """
 from __future__ import annotations
-import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Optional
-from common import ProofPacket, VerifyLevel, emit_gate_json
+from typing import Optional
+from common import emit_gate_json
 
 class VerificationLevel(Enum):
     L1_DETERMINISTIC = "L1"  # Assertion/exit-code/golden — autonomous
@@ -93,7 +92,7 @@ class AdherenceGate:
         # Compute gate penalty
         critical_skipped = False
         gate_penalty = 0.0
-        for gate_id in skipped_gates:
+        for _ in skipped_gates:
             gate_penalty += self.gate_lambda
             critical_skipped = True
         
