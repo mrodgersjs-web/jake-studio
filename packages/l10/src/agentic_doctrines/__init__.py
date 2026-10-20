@@ -11,10 +11,10 @@ Purpose: Registry, selector, scorer, and evolver for the 10 Agentic Doctrines.
 Encodes production-grade agentic coding patterns as a self-improving system.
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any
-from ..common import BaseModule, ProofPacket
+from ..common import BaseModule
 import hashlib
 import json
 
