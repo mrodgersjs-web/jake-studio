@@ -169,7 +169,7 @@ class TestTasteEngine(unittest.TestCase):
         self.assertIn(a.ship_band, [ShipBand.SHIP_WITH_PRIDE, ShipBand.SHIP_POLISH_LATER])
     
     def test_signature_replay_blocks(self):
-        from cognition_stack.taste_engine import TasteEngine, ShipBand
+        from cognition_stack.taste_engine import TasteEngine
         t = TasteEngine()
         a = t.audit("t1", "generic AI output", {
             "intentionality": 4.5, "craft_quality": 4.5, "ai_slop": 5.0,
@@ -340,7 +340,7 @@ class TestL10Scenarios(unittest.TestCase):
         self.assertEqual(ref_bad.refute(c2, budget=10).verdict, RefutationVerdict.ERROR)
     
     def test_s05_taste_signature_replay(self):
-        from cognition_stack.taste_engine import TasteEngine, ShipBand
+        from cognition_stack.taste_engine import TasteEngine
         t = TasteEngine()
         a1 = t.audit("good", "precise", {"intentionality":4.8,"craft_quality":4.5,"ai_slop":5.0,"writing_voice":4.5,"accessibility":4.5})
         a2 = t.audit("bad", "generic", {"intentionality":4.5,"craft_quality":4.5,"ai_slop":2.0,"writing_voice":2.0,"accessibility":4.5},
@@ -349,7 +349,7 @@ class TestL10Scenarios(unittest.TestCase):
         self.assertTrue(a2.signature_replay_blocked)
     
     def test_s06_council_diversity(self):
-        from cognition_stack.council import ProblemSolvingCouncil, CouncilMember, CouncilRole, CouncilVerdict
+        from cognition_stack.council import ProblemSolvingCouncil, CouncilMember, CouncilRole
         council = ProblemSolvingCouncil()
         good = [CouncilMember(r, f, m) for r, f, m in [
             (CouncilRole.ARCHITECT, "claude", "opus"), (CouncilRole.WORKER, "gpt", "gpt-4o"),
