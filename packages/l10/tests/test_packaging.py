@@ -33,3 +33,10 @@ def test_every_package_ships_py_typed():
 
 def test_package_data_declares_py_typed():
     assert '["py.typed"]' in PYPROJECT
+
+
+def test_ruff_selects_error_and_bugbear_rules():
+    select = re.search(r'^select = \[(.*?)\]', PYPROJECT, re.MULTILINE)
+    assert select is not None
+    assert '"E"' in select.group(1) and '"F"' in select.group(1)
+    assert '"B"' in select.group(1)
