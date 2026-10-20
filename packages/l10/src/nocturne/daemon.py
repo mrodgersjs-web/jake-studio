@@ -13,16 +13,12 @@ The daemon NEVER ships. It PREPARES THE CASE.
 The Verifier (Jake) still holds sole termination.
 """
 from __future__ import annotations
-import json
-import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 from common import (
-    run_energy, robust_madz, surprisal, deviation_gate,
-    ProofPacket, BMS, GEVRole, anti_goodhart_check,
+    ProofPacket,
 )
 
 class NightPhase(Enum):

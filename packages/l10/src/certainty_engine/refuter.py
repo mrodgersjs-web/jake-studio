@@ -9,15 +9,12 @@ Absence of a found refutation, not presence of a plausible argument, is the pass
 Refuter runs on a DIFFERENT model family than the Generator (anti-collusion).
 """
 from __future__ import annotations
-import json
-import math
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Callable, Optional
 from common import (
-    ProofPacket, GEVRole, BMS, run_energy, surprisal,
-    anti_goodhart_check, deviation_gate,
+    ProofPacket,
 )
 
 class RefutationVerdict(Enum):
