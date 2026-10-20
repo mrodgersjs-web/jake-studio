@@ -17,14 +17,11 @@ Deliberation with a STOP: Beta-Binomial mixture + KS statistic halts
 when verdicts stabilize — no fixed round count, no burning cost past convergence.
 """
 from __future__ import annotations
-import json
-import math
 from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Optional
-from common import ProofPacket, GEVRole, BMS
 
 class CouncilRole(Enum):
     ARCHITECT = "architect"
@@ -142,12 +139,6 @@ class ProblemSolvingCouncil:
         
         If Architect and Verifier collapse to one family → E=∞.
         """
-        generators = [m for m in members if m.role in (CouncilRole.ARCHITECT, CouncilRole.WORKER)]
-        graders = [m for m in members if m.role in (CouncilRole.EVALUATOR, CouncilRole.VERIFIER)]
-        
-        gen_families = {m.model_family for m in generators}
-        grade_families = {m.model_family for m in graders}
-        
         # Architect and Verifier must be different families
         architects = [m for m in members if m.role == CouncilRole.ARCHITECT]
         verifiers = [m for m in members if m.role == CouncilRole.VERIFIER]

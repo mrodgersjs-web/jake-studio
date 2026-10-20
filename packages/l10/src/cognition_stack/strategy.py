@@ -7,13 +7,10 @@ multiple altitudes and personas, scores the branches, and picks by expected free
 — so it never sprints confidently down the wrong path.
 """
 from __future__ import annotations
-import json
-import math
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Optional
-from common import expected_free_energy, blend_value, ProofPacket
+from typing import Optional
+from common import expected_free_energy, blend_value
 
 # ── Faculty 5: Strategy Tool ──────────────────────────────────────────
 
@@ -277,7 +274,7 @@ class PersonaThinking:
         personas = list(PersonaType)
         
         self.verdicts = []
-        for persona, family in zip(personas, families):
+        for persona, family in zip(personas, families, strict=False):
             self.critique(artifact, persona, family)
         
         return self.verdicts

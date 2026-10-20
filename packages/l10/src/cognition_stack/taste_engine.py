@@ -12,12 +12,10 @@ But taste IS grade-able if you write the opinion down strongly enough.
 (Anthropic post-training doctrine)
 """
 from __future__ import annotations
-import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Optional
-from common import ProofPacket, BMS, Confidence
+from typing import Optional
 
 class ShipBand(Enum):
     SHIP_WITH_PRIDE = "ship_with_pride"  # >= 4.5
