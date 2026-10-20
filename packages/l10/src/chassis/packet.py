@@ -26,7 +26,6 @@ from enum import Enum
 from typing import Any, Optional, List, Dict
 from uuid import uuid4
 
-from pydantic import BaseModel, Field
 
 
 class GEVRole(str, Enum):
