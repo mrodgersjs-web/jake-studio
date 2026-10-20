@@ -18,8 +18,8 @@ import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Optional
-from common import ProofPacket, BMS, GEVRole
+from typing import Optional
+from common import BMS, GEVRole
 
 class StampPhase(Enum):
     F0_OUTCOME_INTAKE = "F0"
