@@ -13,13 +13,10 @@ A process restart must resume safely without repeating a committed side effect.
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Optional, Dict, List
-from contextlib import contextmanager
 
 from .fsm import RunState
 
@@ -151,7 +148,7 @@ class StateStore:
         self._conn.commit()
 
     def create_run(self, run_id: str, harness_name: str, harness_version: str,
-                   goal: Optional[str] = None, budget_tokens: int = 0) -> None:
+                   goal: str | None = None, budget_tokens: int = 0) -> None:
         """Create a new run record."""
         cursor = self._conn.cursor()
         now = datetime.now(timezone.utc).isoformat()
@@ -166,7 +163,7 @@ class StateStore:
         self._conn.commit()
 
     def set_state(self, run_id: str, state: RunState, actor: str,
-                  reason: Optional[str] = None) -> None:
+                  reason: str | None = None) -> None:
         """Update the current state and record the transition."""
         cursor = self._conn.cursor()
         now = datetime.now(timezone.utc).isoformat()
@@ -188,7 +185,7 @@ class StateStore:
         """, (state.value, now, run_id))
         self._conn.commit()
 
-    def get_state(self, run_id: str) -> Optional[RunState]:
+    def get_state(self, run_id: str) -> RunState | None:
         """Get the current state of a run."""
         cursor = self._conn.cursor()
         cursor.execute("SELECT current_state FROM runs WHERE run_id = ?", (run_id,))
@@ -197,7 +194,7 @@ class StateStore:
             return RunState(row["current_state"])
         return None
 
-    def get_run_state(self, run_id: str) -> Optional[dict]:
+    def get_run_state(self, run_id: str) -> dict | None:
         """Get the full run state as a dict."""
         cursor = self._conn.cursor()
         cursor.execute("""
@@ -208,7 +205,12 @@ class StateStore:
         """, (run_id,))
         row = cursor.fetchone()
         if row:
-            return dict(row)
+            state = dict(row)
+            state["budget_remaining_tokens"] = (
+                state.get("budget_tokens", 0)
+                - state.get("budget_consumed_tokens", 0)
+            )
+            return state
         return None
 
     def checkpoint(self, run_id: str) -> None:
@@ -221,7 +223,7 @@ class StateStore:
         self._conn.commit()
 
     def commit_idempotency_key(self, run_id: str, key: str,
-                               side_effect: Optional[str] = None) -> None:
+                               side_effect: str | None = None) -> None:
         """Commit an idempotency key to prevent duplicate side effects."""
         cursor = self._conn.cursor()
         now = datetime.now(timezone.utc).isoformat()
@@ -266,7 +268,7 @@ class StateStore:
 
     def record_tool_call(self, run_id: str, tool_name: str,
                          side_effect_class: str, input_summary: str,
-                         status: str, duration_ms: Optional[int] = None) -> None:
+                         status: str, duration_ms: int | None = None) -> None:
         """Record a tool call."""
         cursor = self._conn.cursor()
         now = datetime.now(timezone.utc).isoformat()
@@ -290,7 +292,7 @@ class StateStore:
         self._conn.commit()
 
     def add_task(self, run_id: str, task_id: str, name: str,
-                 payload: Optional[str] = None) -> None:
+                 payload: str | None = None) -> None:
         """Add a task to the run."""
         cursor = self._conn.cursor()
         now = datetime.now(timezone.utc).isoformat()
@@ -320,7 +322,7 @@ class StateStore:
         """, (now, task_id, run_id))
         self._conn.commit()
 
-    def get_pending_tasks(self, run_id: str) -> List[dict]:
+    def get_pending_tasks(self, run_id: str) -> list[dict]:
         """Get all pending/in-progress tasks for a run (for resume)."""
         cursor = self._conn.cursor()
         cursor.execute("""
@@ -330,7 +332,7 @@ class StateStore:
         """, (run_id,))
         return [dict(row) for row in cursor.fetchall()]
 
-    def get_transition_history(self, run_id: str) -> List[dict]:
+    def get_transition_history(self, run_id: str) -> list[dict]:
         """Get all state transitions for a run."""
         cursor = self._conn.cursor()
         cursor.execute("""
